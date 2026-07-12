@@ -1,0 +1,17 @@
+.chip {
+  flex: none;
+  /* Matches the hand-drawn outline's 75:51 proportions (see VIEW_WIDTH/
+     VIEW_HEIGHT in AvatarChip.tsx) instead of forcing it back to square.
+     Height is the shared --avatar-chip-height custom property (defined in
+     global.css) rather than a local literal — kept as a named value even
+     though nothing else reads it on this branch, since .row's
+     align-items: center (Bubble.module.css) is what aligns this to the
+     tail now, not a calc() off this variable. */
+  width: 96px;
+  height: var(--avatar-chip-height);
+  overflow: visible;
+  /* Row centers this on the bubble/tail by default (see .row in
+     Bubble.module.css) — this nudges it down from that exact center to
+     taste. Tune to move further/less. */
+  transform: translateY(13px);
+}

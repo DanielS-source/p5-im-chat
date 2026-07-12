@@ -1,0 +1,22 @@
+.plate {
+  position: relative;
+  display: inline-flex;
+  padding: 14px 22px;
+}
+
+.shard {
+  position: absolute;
+  inset: 0;
+  background-color: var(--ink);
+}
+
+.panel {
+  position: absolute;
+  inset: 0;
+  background-color: var(--paper);
+}
+
+.content {
+  position: relative;
+  color: var(--ink);
+}

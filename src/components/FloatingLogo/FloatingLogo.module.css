@@ -1,0 +1,7 @@
+/* Intrinsic size only — no positioning here, since this asset now shows
+   up in more than one layout (floating over ThreadScreen's field, inline
+   in ContactList's header). Callers position it via their own className. */
+.logo {
+  width: 66px;
+  height: 58px;
+}

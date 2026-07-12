@@ -1,0 +1,138 @@
+.screen {
+  position: relative;
+  /* Establishes its own stacking context so FieldMotifs' negative z-index
+     (see FieldMotifs.module.css) is scoped to compare against *this*
+     element's children only — without it, the negative z-index escapes
+     to a higher-level context and can paint behind .screen's own opaque
+     background instead of just behind its sibling content. */
+  isolation: isolate;
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--blood);
+}
+
+.floatingLogo {
+  position: absolute;
+  /* Below the status bar, floating over the field rather than anchored
+     into a solid header bar. */
+  top: 55px;
+  left: 14px;
+  z-index: 3;
+}
+
+.nameBlock {
+  position: absolute;
+  /* Floats beside FloatingLogo (top:55px, height:58px — see
+     FloatingLogo.module.css), vertically centered on its span rather than
+     the screen, so it reads as one lockup with the logo. */
+  top: 66px;
+  left: 88px;
+  z-index: 3;
+  max-width: 260px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.contactName {
+  display: flex;
+}
+
+.status {
+  color: var(--paper);
+  opacity: 0.75;
+  font-family: var(--font-body);
+  font-size: 0.65rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.messages {
+  position: relative;
+  /* Own stacking context so ConnectingLines' negative z-index (see
+     ConnectingLines.module.css) stays scoped to this element's children —
+     same reasoning as .screen's isolation above. */
+  isolation: isolate;
+  flex: 1;
+  overflow-y: auto;
+  /* Explicit, not left to default: bubble tails poke out past their own
+     box edges (negative left/right offsets), which would otherwise trip
+     the implicit overflow-x:auto that overflow-y:auto forces and open a
+     horizontal scrollbar just from the tails brushing the container edge. */
+  overflow-x: hidden;
+  padding: 14px;
+  /* FloatingLogo sits absolutely positioned over this screen (top:50px,
+     height 42px, see FloatingLogo.module.css) — without extra clearance
+     here the first message renders right under it. */
+  padding-top: 44px;
+  /* ChatInput now floats over this area instead of sitting in flow below
+     it (see ChatInput.module.css's .bar) — this clearance keeps the last
+     message from ever sitting flush against (or under) the floating bar
+     when scrolled all the way down. */
+  padding-bottom: 96px;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.messages::-webkit-scrollbar {
+  display: none;
+}
+
+.emptyState {
+  /* Centered independent of scroll position/content, rather than a flex
+     child of .messages — an empty thread has nothing else in the flow to
+     center against. */
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 0 32px;
+  text-align: center;
+  opacity: 0.85;
+}
+
+.emptyTitle {
+  color: var(--paper);
+  font-family: var(--font-display);
+  text-transform: uppercase;
+  font-size: 1.1rem;
+  letter-spacing: 0.04em;
+  -webkit-text-stroke: 3.5px var(--ink);
+  paint-order: stroke fill;
+}
+
+.emptySubtitle {
+  color: var(--paper);
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  opacity: 0.55;
+}
+
+.error {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-block: 6px;
+  padding: 8px 10px;
+  border: 2px solid var(--ink);
+  background-color: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+}
+
+.error button {
+  flex: none;
+  padding: 4px 10px;
+  border: none;
+  background-color: var(--ink);
+  color: var(--paper);
+  font-family: var(--font-body);
+  cursor: pointer;
+}

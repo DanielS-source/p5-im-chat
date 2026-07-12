@@ -1,0 +1,67 @@
+@import './fonts.css';
+
+:root {
+  --blood: #d40015;
+  /* Static fallbacks matching --blood's default, so there's no flash of
+     an unset value before App.tsx's theme effect computes and overwrites
+     these on mount. That effect (adjustBrightness in themePreference.ts)
+     is the actual source of truth whenever the field color changes. */
+  --main-dark: #6a000b;
+  --main-light: #ff0022;
+  --ink: #0a0a0a;
+  --paper: #faf7f0;
+
+  --font-display: 'Archivo Black', sans-serif;
+  --font-body: 'Oswald', sans-serif;
+
+  /* Single source of truth for AvatarChip's rendered height, so the
+     message bubble's tail (a separate component) can align its tip to
+     the avatar's vertical center without hardcoding a duplicate number
+     that could silently drift out of sync if the avatar is resized. */
+  --avatar-chip-height: 66px;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--ink);
+  color: var(--ink);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  overflow: hidden;
+}
+
+/*
+ * The app is always a phone-width column, centered. Setting this here once
+ * means screen components don't each need to repeat width/max-width/margin
+ * — and avoids the trap where a percentage-width child inside an
+ * auto-sized flex item silently shrinks to its content's size.
+ */
+#root {
+  width: 100%;
+  max-width: 420px;
+  margin: 0 auto;
+}
+
+img,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+/* No rounded corners anywhere in this codebase. */
+* {
+  border-radius: 0 !important;
+}

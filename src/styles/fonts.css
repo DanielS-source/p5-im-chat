@@ -1,0 +1,81 @@
+@font-face {
+  font-family: 'Archivo Black';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/archivo-black-400.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Oswald';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/oswald-400.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Oswald';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('/fonts/oswald-500.woff2') format('woff2');
+}
+
+/* Mixed-font "ransom note" display set — used to render text with a
+   different font per letter, not as a single body/display face. */
+@font-face {
+  font-family: 'Bangers';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/bangers-400.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Bungee';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/bungee-400.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Bungee Inline';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/bungee-inline-400.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Bungee Outline';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/bungee-outline-400.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Bungee Shade';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/bungee-shade-400.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Rubik Distressed';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/rubik-distressed-400.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Rubik Wet Paint';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/rubik-wet-paint-400.woff2') format('woff2');
+}

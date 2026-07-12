@@ -1,0 +1,51 @@
+.field {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  /* Negative z-index paints before .screen's normal (non-positioned)
+     children — .messages, the back button, ChatInput — regardless of
+     their DOM order, so this sits behind all of them without needing to
+     touch those other components' stacking. */
+  z-index: -1;
+}
+
+.motif {
+  position: absolute;
+  top: -40px;
+  width: 14px;
+  height: 14px;
+  animation-name: fall;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+/* Fall + side-to-side sway + continuous spin, looping seamlessly (100% is
+   the same shape/rotation-multiple as 0%, just further along). Sway
+   alternates via --sway so it isn't a straight drop; spin direction is
+   per-particle via --rotate-dir (1 or -1). */
+@keyframes fall {
+  0% {
+    transform: translate(0, 0) rotate(0deg) scale(var(--scale));
+  }
+  25% {
+    transform: translate(var(--sway), 25vh) rotate(calc(90deg * var(--rotate-dir))) scale(var(--scale));
+  }
+  50% {
+    transform: translate(calc(var(--sway) * -1), 50vh) rotate(calc(180deg * var(--rotate-dir))) scale(var(--scale));
+  }
+  75% {
+    transform: translate(var(--sway), 75vh) rotate(calc(270deg * var(--rotate-dir))) scale(var(--scale));
+  }
+  100% {
+    transform: translate(0, 100vh) rotate(calc(360deg * var(--rotate-dir))) scale(var(--scale));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .motif {
+    animation: none;
+    top: 40%;
+    opacity: 0.5;
+  }
+}

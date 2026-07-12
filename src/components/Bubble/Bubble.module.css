@@ -1,0 +1,137 @@
+.row {
+  display: flex;
+  /* Centers both the bubble and the avatar chip on the row's own cross
+     axis (whichever sibling is taller defines that height) — this is what
+     makes the avatar "follow" the tail rather than the other way around:
+     the tail stays simply centered on the bubble (see .tail below), and
+     since both siblings share the same center by construction here, the
+     avatar's center lands on the tail with no coordination between the
+     two components needed. Was align-items: flex-end (bottom-aligned)
+     before switching to this approach — see the avatar-follows-tail
+     branch/develop history if that's preferred after all. */
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  /* 50% up from 4px, giving ~50% more breathing room between message rows. */
+  margin-block: 25px;
+}
+
+.row--me {
+  justify-content: flex-end;
+}
+
+.row--them {
+  justify-content: flex-start;
+  /* Pulled in from the shared 8px .row gap — shifts the bubble (and its
+     attached tail, which is positioned relative to the bubble) closer to
+     the avatar, so the tail's tip reaches a little further into the
+     portrait instead of stopping at its edge. */
+  gap: 4px;
+}
+
+.bubble {
+  position: relative;
+  max-width: 78%;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  line-height: 1.35;
+}
+
+.bubble--me {
+  --bubble-fill: var(--paper);
+  --bubble-text: var(--ink);
+  --bubble-stroke: var(--ink);
+}
+
+.bubble--them {
+  --bubble-fill: var(--ink);
+  --bubble-text: var(--paper);
+  --bubble-stroke: var(--paper);
+}
+
+/* Mirrors the shared body so it points the other way for outgoing
+   messages. Drop this if "me" ever gets its own hand-drawn shape instead.
+   .tail has its own mirror rule below (combined with its centering
+   transform, since an element can only have one `transform` declaration). */
+.bubble--me .shape {
+  transform: scaleX(-1);
+}
+
+.shape {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+/* Fixed pixel size (not stretched to fill .bubble like the body used to
+   be), so the tail stays the same size regardless of how big the bubble
+   grows for longer messages — the whole point of splitting it out of the
+   body shape. `width`/`height` match the tail artwork's proportions (see
+   TAIL_VIEW_BOX in Bubble.tsx) — most of that extra width tucks behind
+   the body deliberately, so it transitions under the body's fill layer
+   smoothly instead of stopping short. `left` (how far it pokes out past
+   the body's edge) is unchanged from before — only the reach inward grew.
+   See Bubble.tsx for the four-layer paint order (tail outline, body
+   outline, tail fill, body fill) this depends on.
+
+   Centered on the bubble's own height (not a fixed offset from any
+   avatar). The avatar chip is the one that aligns to *this* instead — see
+   .row's align-items: center above — so this stays simple regardless of
+   whether there's an avatar next to it at all. */
+.tail {
+  position: absolute;
+  top: 50%;
+  left: -22px;
+  width: 67px;
+  height: 46px;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+.bubble--me .tail {
+  left: auto;
+  right: -22px;
+  transform: translateY(-50%) scaleX(-1);
+}
+
+/* Shared by the body's outline/fill divs (background-color) and the tail's
+   SVG paths (fill) — each element only picks up whichever property applies
+   to it, so one pair of classes covers both. */
+.outline {
+  position: absolute;
+  inset: 0;
+  background-color: var(--bubble-stroke);
+  fill: var(--bubble-stroke);
+}
+
+.fill {
+  position: absolute;
+  inset: 0;
+  background-color: var(--bubble-fill);
+  fill: var(--bubble-fill);
+}
+
+.text {
+  /* Block, not inline, so it forms a single box — clip-path on a wrapped
+     inline element gets applied per line fragment in some browsers, which
+     would misalign the percentages against the wrong reference box.
+     Padding and the min-size floor live here (not on .bubble) so this
+     element's own border-box always exactly equals .bubble's box — which
+     is what the clip-path percentages (and the .shape SVG) are measured
+     against. If .bubble had its own padding instead, the two boxes would
+     no longer coincide and the clip would land in the wrong place. */
+  display: block;
+  position: relative;
+  z-index: 1;
+  min-width: 110px;
+  min-height: 44px;
+  /* The body is a plain (if tilted) quadrilateral now that the tail lives
+     in its own element, so a modest uniform margin clears its edges in the
+     common case — clip-path (below) is still the actual safety net for the
+     corners, where any tilted shape tapers close to a point. */
+  padding: 18px 22px 22px 22px;
+  color: var(--bubble-text);
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  white-space: pre-wrap;
+}

@@ -1,0 +1,221 @@
+.screen {
+  position: relative;
+  isolation: isolate;
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--blood);
+  overflow: hidden;
+}
+
+.header {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 62px 18px 8px;
+}
+
+.logo {
+  flex: none;
+}
+
+.titleBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.title {
+  display: inline-block;
+  width: max-content;
+  background-color: var(--ink);
+  color: var(--paper);
+  font-family: var(--font-display);
+  text-transform: uppercase;
+  font-size: 1.4rem;
+  letter-spacing: 0.05em;
+  padding: 2px 14px 4px;
+  transform: skewX(-10deg);
+}
+
+.tagline {
+  display: inline-block;
+  width: max-content;
+  background-color: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.65rem;
+  letter-spacing: 0.08em;
+  padding: 3px 10px;
+  transform: skewX(-10deg) translateX(10px);
+}
+
+.body {
+  position: relative;
+  z-index: 1;
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  padding: 20px 18px 24px;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.body::-webkit-scrollbar {
+  display: none;
+}
+
+.section {
+  position: relative;
+}
+
+.sectionLabel {
+  display: inline-block;
+  width: max-content;
+  background-color: var(--ink);
+  color: var(--paper);
+  font-family: var(--font-display);
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  padding: 3px 10px;
+  margin-bottom: 12px;
+  transform: rotate(-1.5deg);
+}
+
+/* Same shard+panel clip-path idea as ChatInput/ContactList. */
+.card {
+  position: relative;
+  transform: rotate(-0.4deg);
+}
+
+.cardShard {
+  position: absolute;
+  inset: -3px;
+  background-color: var(--ink);
+}
+
+.cardPanel {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  padding: 18px;
+  background-color: var(--paper);
+}
+
+.cardPanelDark {
+  background-color: var(--ink);
+}
+
+.swatchButton {
+  position: relative;
+  flex: none;
+  width: 52px;
+  height: 52px;
+  border: none;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.swatch {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 4px solid var(--ink);
+  box-shadow: 3px 3px 0 rgba(10, 10, 10, 0.35);
+}
+
+.swatchCheck {
+  position: absolute;
+  top: -12px;
+  right: -12px;
+  width: 26px;
+  height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--ink);
+  color: var(--paper);
+  font-size: 0.85rem;
+  font-weight: 900;
+  clip-path: polygon(20% 0%, 100% 8%, 82% 100%, 0% 88%);
+  transform: rotate(10deg);
+}
+
+.toggleRow {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+.toggleText {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.toggleTitle {
+  font-family: var(--font-display);
+  text-transform: uppercase;
+  font-size: 1rem;
+  letter-spacing: 0.02em;
+  color: var(--paper);
+}
+
+.toggleSubtitle {
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--paper);
+  opacity: 0.75;
+}
+
+.toggleTrack {
+  flex: none;
+  position: relative;
+  width: 64px;
+  height: 34px;
+  border: 3px solid var(--paper);
+  background: none;
+  padding: 0;
+  cursor: pointer;
+  transform: skewX(-10deg);
+}
+
+.toggleKnob {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 24px;
+  height: 24px;
+  background-color: var(--paper);
+  clip-path: polygon(15% 0%, 100% 0%, 85% 100%, 0% 100%);
+  transition: left 0.15s ease;
+}
+
+.toggleKnobActive {
+  left: 34px;
+}
+
+.vignette {
+  position: absolute;
+  right: -120px;
+  bottom: -120px;
+  width: 320px;
+  height: 320px;
+  background-color: var(--ink);
+  opacity: 0.18;
+  transform: rotate(45deg);
+  pointer-events: none;
+}

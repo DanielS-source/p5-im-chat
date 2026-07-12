@@ -1,0 +1,14 @@
+.mixed {
+  display: inline-flex;
+  gap: 2px;
+  /* Not hardcoded — callers sit on very different backgrounds (the red
+     field directly, or NamePlate's --paper panel), so the container sets
+     its own color and this just inherits it. */
+  color: inherit;
+  font-size: 1.15rem;
+  line-height: 1;
+}
+
+.letter {
+  display: inline-block;
+}

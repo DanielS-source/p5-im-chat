@@ -1,0 +1,33 @@
+.wrap {
+  position: relative;
+  width: max-content;
+  margin: 0 auto;
+}
+
+.day {
+  top: 4px;
+  left: 53px;
+  transform: rotate(-6deg);
+  font-size: 0.7rem;
+}
+
+.month {
+  top: 0.5px;
+  left: 69px;
+  transform: rotate(2deg);
+  font-size: 0.85rem !important;
+}
+
+.weekday {
+  top: 2px;
+  left: 87px;
+  transform: rotate(12deg);
+  font-size: 0.6rem;
+}
+
+.day,
+.month,
+.weekday {
+  position: absolute;
+  font-weight: 700;
+}

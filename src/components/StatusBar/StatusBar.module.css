@@ -1,0 +1,56 @@
+.statusBar {
+  /* Floats over the scrollable message list instead of reserving its own
+     row in .screen's flex column — same "floats over the field" idea as
+     ChatInput's .bar at the bottom. .screen is the positioned ancestor. */
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  /* Own stacking context so .backdrop's negative z-index stays scoped to
+     this bar specifically — same isolation pattern used everywhere else
+     negative z-index shows up in this app (.screen, .messages). */
+  isolation: isolate;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 13px 16px;
+}
+
+/* Frosted-glass bar: translucent --main-dark plus a blur of whatever
+   scrolls underneath (messages, field motifs), rather than a flat opaque
+   strip — the blur is the point here, unlike the rest of the app's
+   flat-edged, no-blur aesthetic. */
+.backdrop {
+  position: absolute;
+  inset: 0;
+  background-color: var(--main-dark);
+  opacity: 0.75;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  z-index: -1;
+}
+
+.back {
+  border: none;
+  background: none;
+  padding: 0;
+  color: var(--paper);
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.time {
+  color: var(--paper);
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  letter-spacing: 0.06em;
+}
+
+/* No back button (e.g. on the root ContactList screen) — space-between
+   with a single child would otherwise push the clock to the left. */
+.time:only-child {
+  margin-left: auto;
+}

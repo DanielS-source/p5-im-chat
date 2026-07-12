@@ -1,0 +1,256 @@
+.screen {
+  position: relative;
+  /* Own stacking context so FieldMotifs' negative z-index stays scoped to
+     this screen's children — same isolation pattern as ThreadScreen.screen. */
+  isolation: isolate;
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--blood);
+  overflow: hidden;
+}
+
+.header {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 62px 18px 8px;
+}
+
+.logo {
+  flex: none;
+}
+
+.titleBlock {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.title {
+  display: inline-block;
+  width: max-content;
+  background-color: var(--ink);
+  color: var(--paper);
+  font-family: var(--font-display);
+  text-transform: uppercase;
+  font-size: 1.4rem;
+  letter-spacing: 0.05em;
+  padding: 2px 14px 4px;
+  transform: skewX(-10deg);
+}
+
+.tagline {
+  display: inline-block;
+  width: max-content;
+  background-color: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.65rem;
+  letter-spacing: 0.08em;
+  padding: 3px 10px;
+  transform: skewX(-10deg) translateX(10px);
+}
+
+.settings {
+  flex: none;
+  border: none;
+  cursor: pointer;
+  background-color: var(--ink);
+  color: var(--paper);
+  font-family: var(--font-body);
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  padding: 8px 12px;
+  transform: skewX(-8deg);
+}
+
+.searchOuter {
+  position: relative;
+  z-index: 1;
+  padding: 14px 18px 4px;
+}
+
+.searchWrap {
+  position: relative;
+}
+
+/* Same shard+panel clip-path idea as ChatInput's input frame. */
+.searchShard {
+  position: absolute;
+  inset: -3px;
+  background-color: var(--ink);
+  clip-path: polygon(0% 12%, 100% 0%, 98% 88%, 2% 100%);
+}
+
+.searchPanel {
+  position: relative;
+  display: block;
+  clip-path: polygon(0% 12%, 100% 0%, 98% 88%, 2% 100%);
+}
+
+.searchInput {
+  width: 100%;
+  box-sizing: border-box;
+  border: none;
+  outline: none;
+  background-color: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: 0.9rem;
+  padding: 12px 16px;
+  min-height: 42px;
+}
+
+.sectionLabel {
+  display: inline-block;
+  width: max-content;
+  background-color: var(--ink);
+  color: var(--paper);
+  font-family: var(--font-display);
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  padding: 3px 10px;
+  transform: rotate(-1.5deg);
+}
+
+.list {
+  position: relative;
+  z-index: 1;
+  list-style: none;
+  margin: 0;
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 18px 18px 24px;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.list::-webkit-scrollbar {
+  display: none;
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-bottom: 16px;
+}
+
+.section:last-child {
+  margin-bottom: 0;
+}
+
+.sectionList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.offline {
+  opacity: 0.6;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  border: none;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+  text-align: left;
+}
+
+.avatarBox {
+  flex: none;
+  position: relative;
+  width: 56px;
+  height: 56px;
+  padding: 4px;
+  background-color: var(--paper);
+  box-shadow: 4px 4px 0 rgba(10, 10, 10, 0.4);
+}
+
+.avatarInner {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.panelWrap {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+}
+
+.panelShard {
+  position: absolute;
+  inset: -3px;
+  background-color: var(--ink);
+}
+
+.panel {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 10px 16px;
+}
+
+.panelPaper {
+  background-color: var(--paper);
+  color: var(--ink);
+}
+
+.panelDark {
+  background-color: var(--ink);
+  color: var(--paper);
+}
+
+.name {
+  font-family: var(--font-display);
+  text-transform: uppercase;
+  font-size: 1rem;
+  letter-spacing: 0.02em;
+}
+
+.subtitle {
+  min-width: 0;
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  font-weight: 500;
+  opacity: 0.75;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.vignette {
+  position: absolute;
+  right: -120px;
+  bottom: -120px;
+  width: 320px;
+  height: 320px;
+  background-color: var(--ink);
+  opacity: 0.18;
+  transform: rotate(45deg);
+  pointer-events: none;
+}

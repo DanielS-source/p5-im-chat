@@ -1,0 +1,25 @@
+.lines {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  /* Height is set inline to the full scrollable content height (not the
+     visible viewport) — see ThreadScreen, which measures actual bubble
+     positions since heights vary with message length. */
+  pointer-events: none;
+  /* Scoped to .messages' own stacking context (isolation: isolate, see
+     ThreadScreen.module.css) so this negative z-index stays behind the
+     bubbles within .messages specifically, rather than escaping to
+     compare against unrelated siblings elsewhere on the screen. */
+  z-index: -1;
+}
+
+.shadow {
+  /* --main-dark (same darker-shade-of-the-field-color token the typing
+     indicator's shard uses), not plain --ink — an --ink shadow behind an
+     --ink line was indistinguishable from the line itself except at the
+     exposed sliver. Blurred on top so it reads as a soft cast shadow
+     rather than a second hard-edged line. */
+  stroke: var(--main-dark);
+  filter: blur(3px);
+}
