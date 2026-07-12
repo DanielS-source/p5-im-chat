@@ -43,5 +43,15 @@
     "systemPrompt": "You are Echo, a new acquaintance who is friendly but a little reserved until the conversation gets going.",
     "textingStyle": "new contact, no messages yet",
     "status": "online"
+  },
+  {
+    "id": "static",
+    "name": "Static",
+    "color": "#5A5A5A",
+    "avatarShape": "diamond",
+    "systemPrompt": "You are Static, a contact who never actually responds.",
+    "textingStyle": "never replies — testing contact, no LLM calls",
+    "status": "offline",
+    "silent": true
   }
 ]

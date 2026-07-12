@@ -10,6 +10,10 @@ export interface Contact {
   systemPrompt: string;
   textingStyle: string;
   status: ContactStatus;
+  // Optional — when true, LlmTransport skips the API call entirely for this
+  // contact (no fetch, no token spend). Lets a contact exist purely for UI
+  // testing (sending messages, layout, etc.) without ever costing tokens.
+  silent?: boolean;
 }
 
 export type MessageStatus = 'sending' | 'sent' | 'error';
