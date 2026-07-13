@@ -1,4 +1,5 @@
 .row {
+  position: relative;
   display: flex;
   /* Centers both the bubble and the avatar chip on the row's own cross
      axis (whichever sibling is taller defines that height) — this is what
@@ -27,6 +28,26 @@
      the avatar, so the tail's tip reaches a little further into the
      portrait instead of stopping at its edge. */
   gap: 4px;
+}
+
+/* Absolutely positioned (not a normal flex item) so it doesn't add to
+   .row's own layout height — ThreadScreen measures that box directly for
+   ConnectingLines' anchor points, and this shouldn't shift it. Overlaps
+   the bubble's own top edge (not fully above it in the row's gap above);
+   nudge to taste. Anchored to whichever side the bubble sits on — left
+   for "them", right for "me" — via the two rules below. */
+.timestamp {
+  position: absolute;
+  top: -21px;
+  z-index: 2;
+}
+
+.row--them .timestamp {
+  left: 72px;
+}
+
+.row--me .timestamp {
+  right: -15px;
 }
 
 .bubble {

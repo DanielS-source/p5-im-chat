@@ -1,0 +1,31 @@
+.wrap {
+  position: relative;
+  width: max-content;
+}
+
+.svgMirrored {
+  transform: scaleX(-1);
+}
+
+.time {
+  /* Color is set inline per-instance (see MessageTimestamp.tsx) since it
+     has to track whichever fill ends up on the front/inner shape. */
+  position: absolute;
+  font-weight: 700;
+  font-size: 0.7rem;
+}
+
+/* Split in two since the svg mirrors on the "me" side (see .svgMirrored)
+   — the same top/left/rotate rarely lands right on both, so each gets its
+   own knobs to fiddle with independently. Same starting values for now. */
+.timeThem {
+  top: 9px;
+  left: 47px;
+  rotate: -7deg;
+}
+
+.timeMine {
+  top: 9px;
+  left: 25px;
+  rotate: 7deg;
+}

@@ -8,6 +8,8 @@ interface SettingsScreenProps {
   noir: boolean;
   onAccentChange: (color: string) => void;
   onNoirChange: (noir: boolean) => void;
+  showTimestamps: boolean;
+  onShowTimestampsChange: (show: boolean) => void;
   onBack: () => void;
 }
 
@@ -33,6 +35,8 @@ export default function SettingsScreen({
   noir,
   onAccentChange,
   onNoirChange,
+  showTimestamps,
+  onShowTimestampsChange,
   onBack,
 }: SettingsScreenProps) {
   return (
@@ -101,6 +105,23 @@ export default function SettingsScreen({
                   onClick={() => onNoirChange(!noir)}
                 >
                   <span className={`${styles.toggleKnob} ${noir ? styles.toggleKnobActive : ''}`} />
+                </button>
+              </span>
+              {/* TEMP: deciding whether the timestamp badges are worth
+                  keeping — see MessageTimestamp/Bubble. Remove once decided. */}
+              <span className={styles.toggleRow}>
+                <span className={styles.toggleText}>
+                  <span className={styles.toggleTitle}>Message times</span>
+                  <span className={styles.toggleSubtitle}>show the HH:mm badge on each bubble</span>
+                </span>
+                <button
+                  type="button"
+                  className={styles.toggleTrack}
+                  aria-pressed={showTimestamps}
+                  aria-label="Toggle message timestamps"
+                  onClick={() => onShowTimestampsChange(!showTimestamps)}
+                >
+                  <span className={`${styles.toggleKnob} ${showTimestamps ? styles.toggleKnobActive : ''}`} />
                 </button>
               </span>
             </span>

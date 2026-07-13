@@ -25,6 +25,10 @@ export default function App() {
   const [error, setError] = useState<string | null>(null);
   const [showSettings, setShowSettings] = useState(false);
   const [theme, setTheme] = useState(loadThemePreference);
+  // TEMP: lets the message timestamp badges be toggled on/off while
+  // deciding if they're worth keeping — see SettingsScreen's Display
+  // section. Remove once decided.
+  const [showTimestamps, setShowTimestamps] = useState(false);
 
   useEffect(() => {
     saveThemePreference(theme);
@@ -137,6 +141,8 @@ export default function App() {
         noir={theme.noir}
         onAccentChange={(accentColor) => setTheme((prev) => ({ ...prev, accentColor }))}
         onNoirChange={(noir) => setTheme((prev) => ({ ...prev, noir }))}
+        showTimestamps={showTimestamps}
+        onShowTimestampsChange={setShowTimestamps}
         onBack={() => setShowSettings(false)}
       />
     );
@@ -172,6 +178,7 @@ export default function App() {
       isTyping={isTyping}
       error={error}
       onRetry={handleRetry}
+      showTimestamps={showTimestamps}
     />
   );
 }

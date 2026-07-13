@@ -90,6 +90,7 @@ interface ThreadScreenProps {
   isTyping: boolean;
   error: string | null;
   onRetry: () => void;
+  showTimestamps: boolean;
 }
 
 export default function ThreadScreen({
@@ -100,6 +101,7 @@ export default function ThreadScreen({
   isTyping,
   error,
   onRetry,
+  showTimestamps,
 }: ThreadScreenProps) {
   const messagesRef = useRef<HTMLDivElement>(null);
   const bubbleRefs = useRef<Array<HTMLDivElement | null>>([]);
@@ -199,7 +201,7 @@ export default function ThreadScreen({
             <div key={message.id}>
               {showDateSeparator && <DateSeparator {...formatDateParts(message.timestamp)} />}
               <div ref={(el) => (bubbleRefs.current[index] = el)}>
-                <Bubble message={message} contact={contact} />
+                <Bubble message={message} contact={contact} showTimestamp={showTimestamps} />
               </div>
             </div>
           );

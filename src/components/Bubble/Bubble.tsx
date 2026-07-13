@@ -2,11 +2,13 @@ import type { Contact, Message } from '../../domain/types';
 import { pathToClipPolygon } from '../../utils/clipPath';
 import AvatarChip from '../AvatarChip/AvatarChip';
 import MessageBadges from '../MessageBadges/MessageBadges';
+import MessageTimestamp from '../MessageTimestamp/MessageTimestamp';
 import styles from './Bubble.module.css';
 
 interface BubbleProps {
   message: Message;
   contact: Contact;
+  showTimestamp?: boolean;
 }
 
 // Hand-drawn in Figma, exported at native size. The body carries no tail —
@@ -37,11 +39,16 @@ const BODY_FILL_CLIP = pathToClipPolygon(BODY_FILL_PATH, BODY_VIEW_WIDTH, BODY_V
 const TEXT_CLIP_PATH = BODY_FILL_CLIP;
 const TEXT_CLIP_PATH_MIRRORED = pathToClipPolygon(BODY_FILL_PATH, BODY_VIEW_WIDTH, BODY_VIEW_HEIGHT, true);
 
-export default function Bubble({ message, contact }: BubbleProps) {
+export default function Bubble({ message, contact, showTimestamp = true }: BubbleProps) {
   const isMine = message.sender === 'me';
 
   return (
     <div className={`${styles.row} ${isMine ? styles['row--me'] : styles['row--them']}`}>
+      {showTimestamp && (
+        <div className={styles.timestamp}>
+          <MessageTimestamp timestamp={message.timestamp} isMine={isMine} />
+        </div>
+      )}
       {!isMine && <AvatarChip contact={contact} />}
       <div className={`${styles.bubble} ${isMine ? styles['bubble--me'] : styles['bubble--them']}`}>
         {/* Paint order back to front: tail outline, body outline, tail
