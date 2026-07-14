@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import type { Contact, ContactStatus } from '../../domain/types';
-import Avatar from '../Avatar/Avatar';
+import ContactPortrait from '../ContactPortrait/ContactPortrait';
 import FieldMotifs from '../FieldMotifs/FieldMotifs';
 import FloatingLogo from '../FloatingLogo/FloatingLogo';
 import StatusBar from '../StatusBar/StatusBar';
@@ -9,6 +9,7 @@ import styles from './ContactList.module.css';
 interface ContactListProps {
   contacts: Contact[];
   lastMessages: Record<string, string>;
+  unreadCounts: Record<string, number>;
   onSelect: (contactId: string) => void;
   onOpenSettings: () => void;
 }
@@ -53,37 +54,38 @@ interface ContactRowProps {
   contact: Contact;
   index: number;
   lastMessage: string | undefined;
+  unreadCount: number;
   onSelect: (contactId: string) => void;
 }
 
-function ContactRow({ contact, index, lastMessage, onSelect }: ContactRowProps) {
+function ContactRow({ contact, index, lastMessage, unreadCount, onSelect }: ContactRowProps) {
   const seed = hashSeed(contact.id);
   const rand = seededRandom(seed);
   const avatarRotate = (rand() - 0.5) * 14;
   const panelRotate = (rand() - 0.5) * 3;
   const clip = PANEL_CLIPS[seed % PANEL_CLIPS.length];
-  // Alternates by position rather than randomly, for a predictable
-  // paper/ink rhythm down the list instead of clumps of the same style.
-  const isDarkPanel = index % 2 === 1;
+  // Kept for the avatar frame's flip rhythm even though the panel itself
+  // no longer alternates color (always paper now — see .panel).
+  const flipFrame = index % 2 === 1;
 
   return (
     <li className={contact.status === 'offline' ? styles.offline : undefined}>
       <button className={styles.row} type="button" onClick={() => onSelect(contact.id)}>
         <span
           className={styles.avatarBox}
-          style={{ transform: `rotate(${avatarRotate}deg)` }}
+          style={{ transform: `translateY(6px) rotate(${avatarRotate}deg)` }}
         >
-          <span className={styles.avatarInner} style={{ backgroundColor: contact.color }}>
-            <Avatar shape={contact.avatarShape} color="var(--paper)" size={36} />
-          </span>
+          <ContactPortrait contact={contact} flip={flipFrame} />
         </span>
         <span className={styles.panelWrap} style={{ transform: `rotate(${panelRotate}deg)` }}>
           <span className={styles.panelShard} style={{ clipPath: clip }} />
-          <span
-            className={`${styles.panel} ${isDarkPanel ? styles.panelDark : styles.panelPaper}`}
-            style={{ clipPath: clip }}
-          >
-            <span className={styles.name}>{contact.name}</span>
+          <span className={styles.panel} style={{ clipPath: clip }}>
+            <span className={styles.nameRow}>
+              <span className={styles.name}>{contact.name}</span>
+              {unreadCount > 0 && (
+                <span className={styles.unreadBadge}>{unreadCount > 9 ? '9+' : unreadCount}</span>
+              )}
+            </span>
             <span className={styles.subtitle}>{lastMessage ?? contact.textingStyle}</span>
           </span>
         </span>
@@ -92,7 +94,13 @@ function ContactRow({ contact, index, lastMessage, onSelect }: ContactRowProps) 
   );
 }
 
-export default function ContactList({ contacts, lastMessages, onSelect, onOpenSettings }: ContactListProps) {
+export default function ContactList({
+  contacts,
+  lastMessages,
+  unreadCounts,
+  onSelect,
+  onOpenSettings,
+}: ContactListProps) {
   const [query, setQuery] = useState('');
 
   const filtered = contacts.filter((contact) =>
@@ -145,6 +153,7 @@ export default function ContactList({ contacts, lastMessages, onSelect, onOpenSe
                     contact={contact}
                     index={index}
                     lastMessage={lastMessages[contact.id]}
+                    unreadCount={unreadCounts[contact.id] ?? 0}
                     onSelect={onSelect}
                   />
                 ))}

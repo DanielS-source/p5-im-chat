@@ -1,8 +1,8 @@
 @import './fonts.css';
 
 :root {
-  --blood: #d40015;
-  /* Static fallbacks matching --blood's default, so there's no flash of
+  --main: #d40015;
+  /* Static fallbacks matching --main's default, so there's no flash of
      an unset value before App.tsx's theme effect computes and overwrites
      these on mount. That effect (adjustBrightness in themePreference.ts)
      is the actual source of truth whenever the field color changes. */

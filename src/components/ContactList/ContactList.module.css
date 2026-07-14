@@ -6,7 +6,7 @@
   height: 100dvh;
   display: flex;
   flex-direction: column;
-  background-color: var(--blood);
+  background-color: var(--main);
   overflow: hidden;
 }
 
@@ -180,19 +180,12 @@
 .avatarBox {
   flex: none;
   position: relative;
-  width: 56px;
-  height: 56px;
-  padding: 4px;
-  background-color: var(--paper);
-  box-shadow: 4px 4px 0 rgba(10, 10, 10, 0.4);
-}
-
-.avatarInner {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  width: 68px;
+  height: 68px;
+  /* ContactPortrait draws its own ink/paper frame, which already carries
+     its own visual weight — the old flat box-shadow (left over from when
+     this box wrapped a plain shape with nothing else giving it depth) was
+     just doubling up on top of that, so it's gone. */
 }
 
 .panelWrap {
@@ -213,23 +206,47 @@
   flex-direction: column;
   gap: 2px;
   padding: 10px 16px;
-}
-
-.panelPaper {
   background-color: var(--paper);
   color: var(--ink);
 }
 
-.panelDark {
-  background-color: var(--ink);
-  color: var(--paper);
+.nameRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
 }
 
 .name {
+  min-width: 0;
   font-family: var(--font-display);
   text-transform: uppercase;
   font-size: 1rem;
   letter-spacing: 0.02em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Same jagged-badge idea as SettingsScreen's swatchCheck — ink/paper only,
+   no arbitrary "notification red" (see CLAUDE.md's palette rule). Sits
+   inline at the far right of the name row (not overlapping the avatar
+   frame anymore) — a fixed slight tilt instead of inheriting a parent
+   rotate, since it's no longer riding .avatarBox. */
+.unreadBadge {
+  flex: none;
+  min-width: 22px;
+  height: 20px;
+  padding: 0 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--main-dark);
+  color: var(--paper);
+  font-family: var(--font-display);
+  font-size: 0.65rem;
+  transform: rotate(-6deg);
+  clip-path: polygon(15% 0%, 100% 10%, 88% 100%, 0% 88%);
 }
 
 .subtitle {

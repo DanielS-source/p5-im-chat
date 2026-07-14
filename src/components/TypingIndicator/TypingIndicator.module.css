@@ -31,7 +31,7 @@
 .dot {
   width: 7px;
   height: 7px;
-  background-color: var(--blood);
+  background-color: var(--main);
   /* EXCEPTION to the codebase-wide border-radius: 0 ban (global.css) —
      circular dots were requested explicitly and directly. Needs
      !important to beat the global `* { border-radius: 0 !important }`
@@ -52,7 +52,7 @@
   0%,
   60%,
   100% {
-    /* brightness(0.5) on this dot's own var(--blood) background lands on
+    /* brightness(0.5) on this dot's own var(--main) background lands on
        the same color as --main-dark (.shard's fill) — so at rest it
        truly disappears into the shard behind it instead of just fading.
        Kept as a filter here (rather than switching the dot's own
@@ -63,7 +63,7 @@
   }
   30% {
     /* Brighter than the shard (not just back to 1) so it pops rather than
-       merely matching the page's plain --blood field. */
+       merely matching the page's plain --main field. */
     transform: scale(1.5);
     filter: brightness(1.4);
   }

@@ -1,6 +1,6 @@
 import { useId } from 'react';
 import type { Contact } from '../../domain/types';
-import Avatar from '../Avatar/Avatar';
+import { PORTRAITS } from '../../data/portraits';
 import styles from './AvatarChip.module.css';
 
 interface AvatarChipProps {
@@ -16,12 +16,6 @@ const OUTER_PATH = 'M22.8132 49.5905L0.813202 0.590462L65.8132 7.59046L73.8132 3
 const MIDDLE_PATH = 'M26.3132 43.0905L11.8132 3.59046L64.8132 9.59046L71.8132 36.0905L26.3132 43.0905Z';
 const INNER_PATH = 'M27.3132 40.5905L15.8132 8.09046L63.3132 11.0905L69.8132 34.5905L27.3132 40.5905Z';
 
-// PLACEHOLDER — temp AI-generated art (background removed, name text
-// cropped), not final. Delete PORTRAITS entries as real hand-drawn/final
-// art replaces them; once every contact has real art, this whole
-// fallback-to-<Avatar> path can go and the component simplifies back to
-// three flat <path> fills plus one <image>.
-//
 // Hard clip on the left and bottom, following INNER_PATH's actual
 // (diagonal, in both cases) edges exactly — art crossing either line gets
 // hidden, same treatment on both sides. Allowed to overflow past the top
@@ -38,7 +32,7 @@ const INNER_PATH = 'M27.3132 40.5905L15.8132 8.09046L63.3132 11.0905L69.8132 34.
 // drawn edge and confines the "vertical extension" purely to the
 // breakout allowance above it.
 const RIGHT_OVERFLOW = 35;
-const PLACEHOLDER_CLIP_PATH = [
+const PORTRAIT_CLIP_PATH = [
   'M27.3132 40.5905', // bottom-left — INNER_PATH's actual vertex, anchors the (preserved) bottom edge
   'L15.8132 8.09046', // true left diagonal, exactly as drawn — nothing simplified here
   `L15.8132 ${8.09046 - VIEW_HEIGHT}`, // only above the real top-left vertex does it go vertical (breakout)
@@ -47,10 +41,6 @@ const PLACEHOLDER_CLIP_PATH = [
   'L69.8132 34.5905', // back to the original bottom-right corner — preserves the bottom edge exactly
   'Z',
 ].join('');
-
-const PORTRAITS: Partial<Record<string, string>> = {
-  raven: '/portraits/raven.png',
-};
 
 export default function AvatarChip({ contact }: AvatarChipProps) {
   const clipId = useId();
@@ -65,25 +55,19 @@ export default function AvatarChip({ contact }: AvatarChipProps) {
     >
       <defs>
         <clipPath id={clipId}>
-          <path d={PLACEHOLDER_CLIP_PATH} />
+          <path d={PORTRAIT_CLIP_PATH} />
         </clipPath>
       </defs>
       <path d={OUTER_PATH} fill="var(--ink)" />
       <path d={MIDDLE_PATH} fill="var(--paper)" />
       <path d={INNER_PATH} fill={contact.color} />
       <g clipPath={`url(#${clipId})`}>
-        {portraitSrc ? (
-          // Pulled down so its bottom edge (y=45) sits past the inner
-          // path's deepest bottom point (y=40.6 at its bottom-left vertex)
-          // — the diagonal bottom edge cuts through actual image content
-          // everywhere along it, reading as the art having been trimmed by
-          // the frame rather than just floating above empty background.
-          <image href={portraitSrc} x={9} y={-9} width={54} height={54} aria-hidden="true" />
-        ) : (
-          <g transform="translate(9 -22)" aria-hidden="true">
-            <Avatar shape={contact.avatarShape} color="var(--paper)" size={56} />
-          </g>
-        )}
+        {/* Pulled down so its bottom edge (y=45) sits past the inner
+            path's deepest bottom point (y=40.6 at its bottom-left vertex)
+            — the diagonal bottom edge cuts through actual image content
+            everywhere along it, reading as the art having been trimmed by
+            the frame rather than just floating above empty background. */}
+        <image href={portraitSrc} x={9} y={-9} width={54} height={54} aria-hidden="true" />
       </g>
     </svg>
   );

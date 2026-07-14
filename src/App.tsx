@@ -5,6 +5,7 @@ import ContactList from './components/ContactList/ContactList';
 import ThreadScreen from './components/ThreadScreen/ThreadScreen';
 import SettingsScreen from './components/SettingsScreen/SettingsScreen';
 import { LocalStorageThreadStore } from './store/LocalStorageThreadStore';
+import { loadReadState, saveReadState } from './store/readState';
 import { adjustBrightness, loadThemePreference, saveThemePreference } from './store/themePreference';
 import { LlmTransport } from './transport/LlmTransport';
 import type { Contact, Message } from './domain/types';
@@ -29,17 +30,18 @@ export default function App() {
   // deciding if they're worth keeping — see SettingsScreen's Display
   // section. Remove once decided.
   const [showTimestamps, setShowTimestamps] = useState(false);
+  const [readState, setReadState] = useState(loadReadState);
 
   useEffect(() => {
     saveThemePreference(theme);
-    // "main" (--blood), plus its derived "main-dark"/"main-light"
-    // companions — every preset color gets consistent lighter/darker
+    // --main, plus its derived --main-dark/--main-light companions —
+    // every preset color gets consistent lighter/darker
     // shades this way instead of each one needing its own hand-picked
     // pair. Anything wanting a darker/lighter variant of the current
     // field color (typing indicator shard, connecting-line shadow, field
     // motifs, ...) should reference these rather than applying its own
     // one-off brightness filter.
-    document.documentElement.style.setProperty('--blood', theme.accentColor);
+    document.documentElement.style.setProperty('--main', theme.accentColor);
     document.documentElement.style.setProperty('--main-dark', adjustBrightness(theme.accentColor, 0.5));
     document.documentElement.style.setProperty('--main-light', adjustBrightness(theme.accentColor, 1.6));
     // "Noir mode... just greys things" — a single filter on the root
@@ -58,6 +60,23 @@ export default function App() {
     transportRef.current = new LlmTransport(contacts, (threadId) =>
       selectedContactRef.current === threadId ? messagesRef.current : [],
     );
+  }
+
+  // Newest message timestamp from that contact counts as "read" — called
+  // both when a thread is first opened and whenever a message arrives
+  // while it's already open, so unread counts only build up for threads
+  // the user isn't currently looking at.
+  function markThreadRead(contactId: string, threadMessages: Message[]) {
+    const newestFromThem = threadMessages
+      .filter((m) => m.sender !== 'me')
+      .reduce((max, m) => Math.max(max, m.timestamp), 0);
+    if (newestFromThem === 0) return;
+    setReadState((prev) => {
+      if ((prev[contactId] ?? 0) >= newestFromThem) return prev;
+      const next = { ...prev, [contactId]: newestFromThem };
+      saveReadState(next);
+      return next;
+    });
   }
 
   useEffect(() => {
@@ -87,6 +106,7 @@ export default function App() {
 
         if (event.done) {
           threadStore.save({ contactId: event.threadId, messages: next });
+          markThreadRead(event.threadId, next);
         }
         return next;
       });
@@ -104,9 +124,11 @@ export default function App() {
 
   function handleSelect(contactId: string) {
     setSelectedContactId(contactId);
-    setMessages(loadInitialMessages(contactId));
+    const initialMessages = loadInitialMessages(contactId);
+    setMessages(initialMessages);
     setError(null);
     setIsTyping(false);
+    markThreadRead(contactId, initialMessages);
   }
 
   function handleSend(text: string) {
@@ -150,6 +172,7 @@ export default function App() {
 
   if (!selectedContact) {
     const lastMessages: Record<string, string> = {};
+    const unreadCounts: Record<string, number> = {};
     for (const contact of contacts) {
       const contactMessages = loadInitialMessages(contact.id);
       const last = contactMessages[contactMessages.length - 1];
@@ -158,11 +181,17 @@ export default function App() {
       // texting style) would otherwise show its raw newlines before the
       // ellipsis ever kicks in.
       if (last) lastMessages[contact.id] = last.text.replace(/\s+/g, ' ').trim();
+
+      const lastRead = readState[contact.id] ?? 0;
+      unreadCounts[contact.id] = contactMessages.filter(
+        (m) => m.sender !== 'me' && m.timestamp > lastRead,
+      ).length;
     }
     return (
       <ContactList
         contacts={contacts}
         lastMessages={lastMessages}
+        unreadCounts={unreadCounts}
         onSelect={handleSelect}
         onOpenSettings={() => setShowSettings(true)}
       />
