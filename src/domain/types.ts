@@ -1,6 +1,6 @@
 export type AvatarShape = 'star' | 'diamond' | 'shard' | 'burst';
 
-export type ContactStatus = 'online' | 'away' | 'offline';
+export type ContactStatus = 'online' | 'offline';
 
 export interface Contact {
   id: string;

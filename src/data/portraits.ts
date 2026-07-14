@@ -2,9 +2,9 @@
 // ContactPortrait (everywhere else) so both source from the same place.
 export const PORTRAITS: Partial<Record<string, string>> = {
   raven: '/portraits/raven.png',
-  nova: '/portraits/nova.jpg',
-  juno: '/portraits/juno.jpg',
-  priya: '/portraits/priya.jpg',
-  echo: '/portraits/echo.jpg',
-  static: '/portraits/static.jpg',
+  nova: '/portraits/nova.png',
+  juno: '/portraits/juno.png',
+  priya: '/portraits/priya.png',
+  echo: '/portraits/echo.png',
+  static: '/portraits/static.png',
 };

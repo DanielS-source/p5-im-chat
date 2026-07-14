@@ -26,7 +26,6 @@ const PANEL_CLIPS = [
 
 const SECTIONS: { status: ContactStatus; label: string }[] = [
   { status: 'online', label: 'Online now' },
-  { status: 'away', label: 'Away' },
   { status: 'offline', label: 'Offline' },
 ];
 
