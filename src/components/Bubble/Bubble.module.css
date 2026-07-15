@@ -14,7 +14,14 @@
   gap: 8px;
   width: 100%;
   /* 50% up from 4px, giving ~50% more breathing room between message rows. */
-  margin-block: 25px;
+  margin-block: 30px;
+}
+
+/* The timestamp badge overlaps the row's top edge (see .timestamp below) —
+   a little extra top margin keeps it from crowding the previous row's
+   bubble when timestamps are on. */
+.row--withTimestamp {
+  margin-top: 45px;
 }
 
 .row--me {
@@ -38,15 +45,16 @@
    for "them", right for "me" — via the two rules below. */
 .timestamp {
   position: absolute;
-  top: -21px;
   z-index: 2;
 }
 
 .row--them .timestamp {
-  left: 72px;
+  top: -28px;
+  left: 78px;
 }
 
 .row--me .timestamp {
+  top: -29px;
   right: -15px;
 }
 

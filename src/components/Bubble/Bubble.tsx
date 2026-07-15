@@ -43,7 +43,11 @@ export default function Bubble({ message, contact, showTimestamp = true }: Bubbl
   const isMine = message.sender === 'me';
 
   return (
-    <div className={`${styles.row} ${isMine ? styles['row--me'] : styles['row--them']}`}>
+    <div
+      className={`${styles.row} ${isMine ? styles['row--me'] : styles['row--them']} ${
+        showTimestamp ? styles['row--withTimestamp'] : ''
+      }`}
+    >
       {showTimestamp && (
         <div className={styles.timestamp}>
           <MessageTimestamp timestamp={message.timestamp} isMine={isMine} />

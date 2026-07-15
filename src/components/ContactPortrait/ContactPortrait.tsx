@@ -17,11 +17,20 @@ interface ContactPortraitProps {
 // AvatarChip's job, a different asset). Two drawn layers (outer/middle);
 // the third path in the source SVG is stroke-only and deliberately never
 // rendered here — it's just the boundary the portrait gets clipped to,
-// not art in its own right.
+// not art in its own right. The contact's accent color is filled in as a
+// backing layer instead (see ACCENT_PATH below), matching AvatarChip's
+// INNER_PATH treatment.
 const VIEW_WIDTH = 101;
 const VIEW_HEIGHT = 103;
 const OUTER_PATH = 'M92.0787 0.563309L0.578735 12.5633L15.5787 102.063L100.079 87.0633L92.0787 0.563309Z';
 const MIDDLE_PATH = 'M91.0787 84.0633L19.5787 93.0633L8.07874 15.5633L87.5787 8.06331L91.0787 84.0633Z';
+
+// The real, undilated innermost square — just the four drawn vertices, no
+// breakout. Used for the accent-color backing so the color stays confined
+// to the frame's actual boundary instead of bleeding into the breakout
+// allowance below (which exists purely so the *portrait image* can escape
+// the frame's tight top-right corner, not so the color fill can).
+const ACCENT_PATH = 'M26.5787 87.5633L15.0787 20.5633L79.0787 13.5633L83.0787 76.5633Z';
 
 // Breakout allowance, same idea as AvatarChip's PLACEHOLDER_CLIP_PATH: the
 // left and bottom edges stay hard-clipped exactly on the drawn boundary,
@@ -66,7 +75,14 @@ export default function ContactPortrait({ contact, flip }: ContactPortraitProps)
       <g transform={flip ? MIRROR : undefined}>
         <path d={OUTER_PATH} fill="var(--ink)" />
         <path d={MIDDLE_PATH} fill="var(--paper)" />
-        <g clipPath={`url(#${clipId})`}>{flip ? <g transform={MIRROR}>{content}</g> : content}</g>
+        <g clipPath={`url(#${clipId})`}>
+          {/* Accent-color backing, same trick as AvatarChip's INNER_PATH —
+              sits behind the portrait so any transparent background in the
+              art (the whole point of the earlier bg-removal pass) shows the
+              contact's own color instead of flat paper. */}
+          <path d={ACCENT_PATH} fill={contact.color} />
+          {flip ? <g transform={MIRROR}>{content}</g> : content}
+        </g>
       </g>
     </svg>
   );
