@@ -1,6 +1,7 @@
 export interface ThemePreference {
   accentColor: string;
   noir: boolean;
+  particlesEnabled: boolean;
 }
 
 const STORAGE_KEY = 'phantom-chat:theme';
@@ -9,14 +10,15 @@ export const DEFAULT_ACCENT_COLOR = '#d40015';
 export function loadThemePreference(): ThemePreference {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) return { accentColor: DEFAULT_ACCENT_COLOR, noir: false };
+    if (!raw) return { accentColor: DEFAULT_ACCENT_COLOR, noir: false, particlesEnabled: false };
     const parsed = JSON.parse(raw);
     return {
       accentColor: typeof parsed.accentColor === 'string' ? parsed.accentColor : DEFAULT_ACCENT_COLOR,
       noir: Boolean(parsed.noir),
+      particlesEnabled: typeof parsed.particlesEnabled === 'boolean' ? parsed.particlesEnabled : false,
     };
   } catch {
-    return { accentColor: DEFAULT_ACCENT_COLOR, noir: false };
+    return { accentColor: DEFAULT_ACCENT_COLOR, noir: false, particlesEnabled: false };
   }
 }
 

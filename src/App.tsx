@@ -165,6 +165,8 @@ export default function App() {
         onNoirChange={(noir) => setTheme((prev) => ({ ...prev, noir }))}
         showTimestamps={showTimestamps}
         onShowTimestampsChange={setShowTimestamps}
+        showParticles={theme.particlesEnabled}
+        onShowParticlesChange={(particlesEnabled) => setTheme((prev) => ({ ...prev, particlesEnabled }))}
         onBack={() => setShowSettings(false)}
       />
     );
@@ -192,6 +194,7 @@ export default function App() {
         contacts={contacts}
         lastMessages={lastMessages}
         unreadCounts={unreadCounts}
+        showParticles={theme.particlesEnabled}
         onSelect={handleSelect}
         onOpenSettings={() => setShowSettings(true)}
       />
@@ -208,6 +211,7 @@ export default function App() {
       error={error}
       onRetry={handleRetry}
       showTimestamps={showTimestamps}
+      showParticles={theme.particlesEnabled}
     />
   );
 }

@@ -12,12 +12,44 @@
 
 .motif {
   position: absolute;
-  top: -40px;
-  width: 14px;
-  height: 14px;
+  top: -70px;
+  width: 78px;
+  height: 78px;
+  /* Travel well past the container's own height (not just to 100vh) so a
+     particle is fully clipped by .field's overflow:hidden — offscreen, not
+     just touching the edge — before the animation loops back to the top.
+     Without the extra clearance it visibly popped right at the bottom
+     edge instead of falling out of view. */
+  --fall-distance: calc(100vh + 150px);
   animation-name: fall;
   animation-timing-function: linear;
   animation-iteration-count: infinite;
+}
+
+.img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* A solid --main-light rect, masked to a *derived* per-tone mask PNG (see
+   motifMaskSrc in motifAssets.ts) rather than blended against the base
+   image's own pixels — a real per-pixel swap of exactly one drawn tone,
+   not an approximation. Painted at full opacity directly over the <img>
+   below it, so it cleanly replaces that tone regardless of its actual hex
+   value (works the same for black ink, white fill, or red ink). */
+.recolorOverlay {
+  position: absolute;
+  inset: 0;
+  background-color: var(--main-light);
+  mask-repeat: no-repeat;
+  mask-size: contain;
+  mask-position: center;
+  mask-mode: alpha;
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-size: contain;
+  -webkit-mask-position: center;
 }
 
 /* Fall + side-to-side sway + continuous spin, looping seamlessly (100% is
@@ -29,16 +61,19 @@
     transform: translate(0, 0) rotate(0deg) scale(var(--scale));
   }
   25% {
-    transform: translate(var(--sway), 25vh) rotate(calc(90deg * var(--rotate-dir))) scale(var(--scale));
+    transform: translate(var(--sway), calc(var(--fall-distance) * 0.25)) rotate(calc(90deg * var(--rotate-dir)))
+      scale(var(--scale));
   }
   50% {
-    transform: translate(calc(var(--sway) * -1), 50vh) rotate(calc(180deg * var(--rotate-dir))) scale(var(--scale));
+    transform: translate(calc(var(--sway) * -1), calc(var(--fall-distance) * 0.5))
+      rotate(calc(180deg * var(--rotate-dir))) scale(var(--scale));
   }
   75% {
-    transform: translate(var(--sway), 75vh) rotate(calc(270deg * var(--rotate-dir))) scale(var(--scale));
+    transform: translate(var(--sway), calc(var(--fall-distance) * 0.75)) rotate(calc(270deg * var(--rotate-dir)))
+      scale(var(--scale));
   }
   100% {
-    transform: translate(0, 100vh) rotate(calc(360deg * var(--rotate-dir))) scale(var(--scale));
+    transform: translate(0, var(--fall-distance)) rotate(calc(360deg * var(--rotate-dir))) scale(var(--scale));
   }
 }
 

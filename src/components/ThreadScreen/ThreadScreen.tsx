@@ -91,6 +91,7 @@ interface ThreadScreenProps {
   error: string | null;
   onRetry: () => void;
   showTimestamps: boolean;
+  showParticles: boolean;
 }
 
 export default function ThreadScreen({
@@ -102,6 +103,7 @@ export default function ThreadScreen({
   error,
   onRetry,
   showTimestamps,
+  showParticles,
 }: ThreadScreenProps) {
   const messagesRef = useRef<HTMLDivElement>(null);
   const bubbleRefs = useRef<Array<HTMLDivElement | null>>([]);
@@ -174,7 +176,7 @@ export default function ThreadScreen({
 
   return (
     <div className={styles.screen}>
-      <FieldMotifs />
+      {showParticles && <FieldMotifs />}
       <StatusBar onBack={onBack} />
       <FloatingLogo className={styles.floatingLogo} />
       {/* Parked for now — contact name + status next to the logo didn't

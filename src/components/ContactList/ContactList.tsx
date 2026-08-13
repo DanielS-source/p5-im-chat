@@ -10,6 +10,7 @@ interface ContactListProps {
   contacts: Contact[];
   lastMessages: Record<string, string>;
   unreadCounts: Record<string, number>;
+  showParticles: boolean;
   onSelect: (contactId: string) => void;
   onOpenSettings: () => void;
 }
@@ -97,6 +98,7 @@ export default function ContactList({
   contacts,
   lastMessages,
   unreadCounts,
+  showParticles,
   onSelect,
   onOpenSettings,
 }: ContactListProps) {
@@ -109,7 +111,7 @@ export default function ContactList({
 
   return (
     <div className={styles.screen}>
-      <FieldMotifs />
+      {showParticles && <FieldMotifs />}
       <StatusBar />
       <div className={styles.header}>
         <FloatingLogo className={styles.logo} />

@@ -10,6 +10,8 @@ interface SettingsScreenProps {
   onNoirChange: (noir: boolean) => void;
   showTimestamps: boolean;
   onShowTimestampsChange: (show: boolean) => void;
+  showParticles: boolean;
+  onShowParticlesChange: (show: boolean) => void;
   onBack: () => void;
 }
 
@@ -37,11 +39,13 @@ export default function SettingsScreen({
   onNoirChange,
   showTimestamps,
   onShowTimestampsChange,
+  showParticles,
+  onShowParticlesChange,
   onBack,
 }: SettingsScreenProps) {
   return (
     <div className={styles.screen}>
-      <FieldMotifs />
+      {showParticles && <FieldMotifs />}
       <StatusBar onBack={onBack} />
       <div className={styles.header}>
         <FloatingLogo className={styles.logo} />
@@ -122,6 +126,21 @@ export default function SettingsScreen({
                   onClick={() => onShowTimestampsChange(!showTimestamps)}
                 >
                   <span className={`${styles.toggleKnob} ${showTimestamps ? styles.toggleKnobActive : ''}`} />
+                </button>
+              </span>
+              <span className={styles.toggleRow}>
+                <span className={styles.toggleText}>
+                  <span className={styles.toggleTitle}>Field particles</span>
+                  <span className={styles.toggleSubtitle}>falling tarot &amp; card motifs on the red field</span>
+                </span>
+                <button
+                  type="button"
+                  className={styles.toggleTrack}
+                  aria-pressed={showParticles}
+                  aria-label="Toggle field particles"
+                  onClick={() => onShowParticlesChange(!showParticles)}
+                >
+                  <span className={`${styles.toggleKnob} ${showParticles ? styles.toggleKnobActive : ''}`} />
                 </button>
               </span>
             </span>
